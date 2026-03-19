@@ -7,7 +7,7 @@ public class Scheduler extends Thread {
 	private ProcessorCore pcore;
 	private Clock         clock;
 	private int           quantum;
-	private Process[]  	  queue = new Process[100];
+	private Process  	  queue;
 	private int           ttl;
 	private int			  backPointer = 0, frontPointer = 0;
 
@@ -21,8 +21,13 @@ public class Scheduler extends Thread {
 	public void enqueue ( Process proc ) {
 		System.out.println( "\t\u001B[34mScheduler: Process #" 
 			+ proc.getID() + " enqueued.\u001B[0m" );
-		queue[backPointer] = proc;
-		backPointer += 1;
+
+		queue = proc;
+		ttl   = quantum;
+
+		// send the process to the processor.
+		// obviously this is not proper behavior.
+		pcore.interrupt( queue );
  	}
 
 	public void run() {
@@ -33,12 +38,13 @@ public class Scheduler extends Thread {
 			// keep track of the quantum.
 
 			/* FILL IN #8 */
-			ttl--;
-			if(queue[frontPointer] != null && ttl <= 0) {
-				if(queue[frontPointer].runUnit()) enqueue(queue[frontPointer]);
-				pcore.interrupt(queue[frontPointer]);
-				ttl = quantum;
-				frontPointer += 1;
+			if (queue != null) {
+				ttl--;
+
+				if (ttl < 0) {
+					pcore.processYields();
+					queue = null;
+				}
 			}
 			clock.semaphore();
 		}

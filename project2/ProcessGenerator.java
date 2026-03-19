@@ -15,6 +15,7 @@ public class ProcessGenerator extends Thread {
 		/* FILL IN #4 */
 		this.clock = clock;
 		this.scheduler = scheduler;
+		this.numProc = 0; // Ensures that numProc has a set value
 	}
 
 	// main method of the ProcessGenerator

@@ -13,7 +13,7 @@ public class Process {
 		// FILL IN #2.
 		this.pID = pID;
 		this.start = start;
-		if (runLeft > 0) this.runLeft = runLeft; // If there is remaining time for the process, set RunLeft.
+		this.runLeft = runLeft; // If there is remaining time for the process, set RunLeft.
 	}
 
 	// returns process ID

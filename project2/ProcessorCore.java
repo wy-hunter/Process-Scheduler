@@ -15,6 +15,7 @@ public class ProcessorCore extends Thread {
 		// accept values
 		/* FILL IN #7. */
 		this.clock = clock;
+		this.runningProc = null;
 	}
 
 	// replace the current process with another
