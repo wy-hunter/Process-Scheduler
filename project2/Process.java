@@ -32,4 +32,8 @@ public class Process {
 			+ " executes 1 unit -- beep, beep, bloop, bloop.\u001B[0m" );
 		return true;
 	}
+
+	public boolean isDone() {
+		return runLeft <= 0;
+	}
 }

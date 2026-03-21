@@ -8,6 +8,7 @@ public class ProcessorCore extends Thread {
 	// follows the computer clock
 	private Clock   clock;
 	private Process runningProc;
+	private Scheduler scheduler;
 	private boolean internalSemaphore = false;
 
 	// a single core's constructor
@@ -17,6 +18,11 @@ public class ProcessorCore extends Thread {
 		this.clock = clock;
 		this.runningProc = null;
 	}
+
+	/*
+	public void setScheduler( Scheduler sc ) {
+		scheduler = sc;
+	}*/
 
 	// replace the current process with another
 	public void interrupt ( Process p ) {
@@ -61,7 +67,9 @@ public class ProcessorCore extends Thread {
 
 			// run one time unit
 			// if the process happens to complete, yield it
-			if ( runningProc != null && ! runningProc.runUnit() ) processYields();
+			if ( runningProc != null && ! runningProc.runUnit() ) {
+				processYields();
+			}
 
 			// wait until the next clock cycle
 			clock.semaphore();

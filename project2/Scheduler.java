@@ -1,13 +1,14 @@
 //
 // CSCI 70300 -- 2025 SP -- Edgar E. Troudt, Ph.D.
 //
+import java.util.LinkedList;
 
 public class Scheduler extends Thread {
 
 	private ProcessorCore pcore;
 	private Clock         clock;
 	private int           quantum;
-	private Process  	  queue;
+	private LinkedList<Process>  	  queue = new LinkedList<>();
 	private int           ttl;
 	private int			  backPointer = 0, frontPointer = 0;
 
@@ -22,31 +23,32 @@ public class Scheduler extends Thread {
 		System.out.println( "\t\u001B[34mScheduler: Process #" 
 			+ proc.getID() + " enqueued.\u001B[0m" );
 
-		queue = proc;
-		ttl   = quantum;
-
-		// send the process to the processor.
-		// obviously this is not proper behavior.
-		pcore.interrupt( queue );
+		queue.add(proc);
  	}
 
 	public void run() {
-		// run infinitely.
-		while ( true ) {
-			// yield processes in the processor that have exhausted their quantum.
-			
-			// keep track of the quantum.
+		Process p = null;
+		ttl = 0;
 
-			/* FILL IN #8 */
-			if (queue != null) {
-				ttl--;
+		while (true) {
+			if (p == null && !queue.isEmpty()) { // If there is no current process running and the queue still has processes
+				p = queue.remove(); // First item in queue is current process running
+				ttl = quantum; // Set time to live to the quantum
+				pcore.interrupt(p); // Replace null process with current process
+			}
 
-				if (ttl < 0) {
-					pcore.processYields();
-					queue = null;
+			if (p != null) { // If there is a current process running
+				ttl--; // Continuously decrement ttl
+				if (ttl <= 0) { // If ttl reaches quantum
+					if(!p.isDone()) queue.add(p); // If process isn't done, add process back to queue
+					p = null; // Nullify the process
 				}
 			}
 			clock.semaphore();
 		}
+	}
+
+	public void removeProcess( Process proc ) {
+		queue.remove(proc);
 	}
 }

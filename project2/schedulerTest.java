@@ -22,6 +22,7 @@ public class schedulerTest {
 		// generates the operating system's scheduling algorithm
 		// instantiate the scheduler with a quantum of 5.
 		sc = new Scheduler(c, pr, 5);
+		//pr.setScheduler(sc);
 
 		// simulates the user + OS generating needed processes to run
 		// instantiate the process generator.
