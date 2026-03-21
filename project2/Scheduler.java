@@ -39,7 +39,7 @@ public class Scheduler extends Thread {
 
 			if (p != null) { // If there is a current process running
 				ttl--; // Continuously decrement ttl
-				if (ttl <= 0) { // If ttl reaches quantum
+				if (ttl <= 0 || p.isDone()) { // If ttl reaches quantum
 					if(!p.isDone()) queue.add(p); // If process isn't done, add process back to queue
 					p = null; // Nullify the process
 				}
