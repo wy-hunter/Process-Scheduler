@@ -9,6 +9,8 @@ public class Scheduler extends Thread {
 	private Clock         clock;
 	private int           quantum;
 	private LinkedList<Process>  	  queue = new LinkedList<>();
+	private LinkedList<Integer>  	  queueRepresentationsString = new LinkedList<>();
+	private Integer			  currentprocessID = 0;
 	private int           ttl;
 	private int			  backPointer = 0, frontPointer = 0;
 
@@ -24,6 +26,7 @@ public class Scheduler extends Thread {
 			+ proc.getID() + " enqueued.\u001B[0m" );
 
 		queue.add(proc);
+		queueRepresentationsString.add(proc.getID());
  	}
 
 	public void run() {
@@ -32,7 +35,12 @@ public class Scheduler extends Thread {
 
 		while (true) {
 			if (p == null && !queue.isEmpty()) { // If there is no current process running and the queue still has processes
+				System.out.println("No process in, adding process to processor core");
+				System.out.println("This is the queuebefore: " + toString(queueRepresentationsString));
 				p = queue.remove(); // First item in queue is current process running
+				
+				currentprocessID = queueRepresentationsString.remove(); // Remove the first item in the queue representation string used to track what is going on in 
+				// hidden processes that are in the queue
 				ttl = quantum; // Set time to live to the quantum
 				pcore.interrupt(p); // Replace null process with current process
 			}
@@ -40,7 +48,12 @@ public class Scheduler extends Thread {
 			if (p != null) { // If there is a current process running
 				ttl--; // Continuously decrement ttl
 				if (ttl <= 0 || p.isDone()) { // If ttl reaches quantum
-					if(!p.isDone()) queue.add(p); // If process isn't done, add process back to queue
+					if(!p.isDone()) {
+						queue.add(p); // If process isn't done, add process back to queue
+						queueRepresentationsString.add(currentprocessID); // Add process ID to the queue representation string
+
+					}
+
 					p = null; // Nullify the process
 				}
 			}
@@ -48,6 +61,14 @@ public class Scheduler extends Thread {
 		}
 	}
 
+	public String toString(LinkedList<Integer> repqueue) {
+		String s = "";
+		for (Integer id : repqueue) {
+			s += id + " ";
+		}
+		return s;
+
+	}
 	public void removeProcess( Process proc ) {
 		queue.remove(proc);
 	}
