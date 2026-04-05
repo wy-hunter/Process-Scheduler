@@ -9,7 +9,7 @@ everything:clean
 
 
 clean: 
-	-rm *.class
+	rm *.class
 jarFiles: 
 	jar cvfe  part1.jar schedulerTest *.class
 
