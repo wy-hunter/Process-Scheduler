@@ -38,11 +38,9 @@ public class Scheduler extends Thread {
 				System.out.println("No process in, adding process to processor core");
 				System.out.println("This is the queuebefore: " + toString(queueRepresentationsString));
 				p = queue.remove(); // First item in queue is current process running
-				/*
 				for (Process process : queue) {
 					System.out.println(process.getID());
 				}
-				*/
 				currentprocessID = queueRepresentationsString.remove(); // Remove the first item in the queue representation string used to track what is going on in 
 				// hidden processes that are in the queue
 				ttl = quantum; // Set time to live to the quantum

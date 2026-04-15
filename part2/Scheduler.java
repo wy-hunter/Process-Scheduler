@@ -4,7 +4,7 @@
 import java.util.LinkedList;
 import java.util.Random;
 
-public class SchedulerPart2 extends Thread {
+public class Scheduler extends Thread {
 
 	private ProcessorCore pcore;
 	private Clock         clock;
@@ -23,7 +23,7 @@ public class SchedulerPart2 extends Thread {
 
 	private int           ttl;	
 
-	public SchedulerPart2 ( Clock clock, ProcessorCore pcore, int quantum ) {
+	public Scheduler ( Clock clock, ProcessorCore pcore, int quantum ) {
 		this.pcore   = pcore;
 		this.clock   = clock;
 		this.quantum = quantum;
@@ -54,6 +54,8 @@ public class SchedulerPart2 extends Thread {
 			if (p == null && (!queue1.isEmpty() || !queue2.isEmpty() || !queue3.isEmpty())) {
 				// check if queue 1 , 2, or 3 has processes in it
 				
+				
+
 				// if queue 1 ttl have time, run process in queue 1
 				if (queue1_ttl > 0 && !queue1.isEmpty()) {
 					System.out.println("Running process from queue 1");
@@ -75,7 +77,9 @@ public class SchedulerPart2 extends Thread {
 					clock.semaphore();
 					continue;
 				}
-				//System.out.println("This is the queues currently: \n" + "q1, quantum 1: " + toString(queue1) + "\n" + "q2, quantum 2: " + toString(queue2) + "\n" + "q3, quantum 3: " + toString(queue3)); -> Creates a concurency error
+				
+				// System.out.println("This is the queues currently: \n" + "q1, quantum 1: " + toString(queue1) + "\n" + "q2, quantum 2: " + toString(queue2) + "\n" + "q3, quantum 3: " + toString(queue3)); -> Creates a concurency error
+				
 
 				p = activeQueue.remove(); // First item in queue is current process running
 				System.out.println("This is the Item: " + p.getID());
