@@ -7,10 +7,10 @@ public class ProcessGenerator extends Thread {
 
 	private int       numProc;
 	private Clock 	  clock;
-	private Scheduler scheduler;
+	private SchedulerPart2 scheduler;
 
 	// constructor
-	public ProcessGenerator ( Clock clock, Scheduler scheduler ) {
+	public ProcessGenerator ( Clock clock, SchedulerPart2 scheduler ) {
 		// accept set values.
 		/* FILL IN #4 */
 		this.clock = clock;

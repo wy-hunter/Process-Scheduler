@@ -8,7 +8,7 @@ public class ProcessorCore extends Thread {
 	// follows the computer clock
 	private Clock   clock;
 	private Process runningProc;
-	private Scheduler scheduler;
+	private SchedulerPart2 scheduler;
 	private boolean internalSemaphore = false;
 
 	// a single core's constructor

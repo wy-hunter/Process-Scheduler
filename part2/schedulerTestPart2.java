@@ -3,12 +3,12 @@
 // CSCI 70300 -- 2025 SP -- Edgar E. Troudt, Ph.D.
 //
 
-public class schedulerTest {
+public class schedulerTestPart2 {
 
 	private static Clock            c;
 	private static ProcessGenerator ps;
 	private static ProcessorCore    pr;
-	private static Scheduler	    sc;
+	private static SchedulerPart2	    sc;
 
 	public static void main ( String args[] ) {
 		// everyone follows the computer's clock
@@ -21,7 +21,7 @@ public class schedulerTest {
 
 		// generates the operating system's scheduling algorithm
 		// instantiate the scheduler with a quantum of 5.
-		sc = new Scheduler(c, pr, 5);
+		sc = new SchedulerPart2(c, pr, 5);
 		//pr.setScheduler(sc);
 
 		// simulates the user + OS generating needed processes to run
