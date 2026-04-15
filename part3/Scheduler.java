@@ -54,22 +54,39 @@ public class Scheduler extends Thread {
 			if (p == null && (!queue1.isEmpty() || !queue2.isEmpty() || !queue3.isEmpty())) {
 				// check if queue 1 , 2, or 3 has processes in it
 				
+				if (activeQueue == null) {
+					if (queue1_ttl > 0 && !queue1.isEmpty()) activeQueue = queue1;
+					else if (queue2_ttl > 0 && !queue2.isEmpty()) activeQueue = queue2;
+					else if (queue3_ttl > 0 && !queue3.isEmpty()) activeQueue = queue3;
+				}
 				
+				if (!activeQueue.isEmpty()) {
+					p = activeQueue.remove(); // First item in queue is current process running
+					System.out.println("This is the Item: " + p.getID());
+					// hidden processes that are in the queue
+					ttl = quantum; // Set time to live to the quantum
+					pcore.interrupt(p); // Replace null process with current process
+				}
 
-				// if queue 1 ttl have time, run process in queue 1
-				if (queue1_ttl > 0 && !queue1.isEmpty()) {
-					System.out.println("Running process from queue 1");
-					activeQueue = queue1;
-					queue1_ttl--; // Decrement queue 1 ttl
-				} else if (queue2_ttl > 0 && !queue2.isEmpty()) { // if queue 2 ttl have time, run process in queue 2
-					System.out.println("Running process from queue 2");
-					activeQueue = queue2;
-					queue2_ttl--; // Decrement queue 2 ttl
-				} else if (queue3_ttl > 0 && !queue3.isEmpty()) { // if queue 3 ttl have time, run process in queue 3
+				if (activeQueue == queue3) {
 					System.out.println("Running process from queue 3");
+					queue3_ttl--;
+					if (queue2_ttl > 0) activeQueue = queue2;
+				} else if (activeQueue == queue2) {
+					System.out.println("Running process from queue 2");
+					queue2_ttl--;
+					if (queue1_ttl > 0) {
+						activeQueue = queue1;
+					} else {
+						activeQueue = queue3;
+					}
+				} else if (activeQueue == queue1) {
+					System.out.println("Running process from queue 1");
+					queue1_ttl--;
 					activeQueue = queue3;
-					queue3_ttl--; // Decrement queue 3 ttl
-				} else{
+				}
+
+				if (queue1_ttl <= 0 && queue2_ttl <= 0 && queue3_ttl <= 0) {
 					System.out.println("All queues ttl is 0, resetting ttl to quantum");
 					queue1_ttl = queue1_quantum;
 					queue2_ttl = queue2_quantum;
@@ -77,15 +94,6 @@ public class Scheduler extends Thread {
 					clock.semaphore();
 					continue;
 				}
-				
-				// System.out.println("This is the queues currently: \n" + "q1, quantum 1: " + toString(queue1) + "\n" + "q2, quantum 2: " + toString(queue2) + "\n" + "q3, quantum 3: " + toString(queue3)); -> Creates a concurency error
-				
-
-				p = activeQueue.remove(); // First item in queue is current process running
-				System.out.println("This is the Item: " + p.getID());
-				// hidden processes that are in the queue
-				ttl = quantum; // Set time to live to the quantum
-				pcore.interrupt(p); // Replace null process with current process
 			}
 
 			if (p != null) { // If there is a current process running
@@ -99,7 +107,51 @@ public class Scheduler extends Thread {
 			}
 			clock.semaphore();
 		}
+
+		/*
+		while (true) {
+			if ((!queue1.isEmpty() || !queue2.isEmpty() || !queue3.isEmpty())) {
+				for (int i = 0; i < 3; ++i) {
+					if (i == 0) {
+						runFromQueue(queue1, queue1_quantum);
+						runFromQueue(queue2, queue2_quantum);
+						runFromQueue(queue3, queue3_quantum);
+					} else if (i == 1) {
+						runFromQueue(queue1, queue1_quantum);
+						runFromQueue(queue2, queue2_quantum);
+					} else {
+						runFromQueue(queue1, queue1_quantum);
+					}
+				}
+			}
+
+			clock.semaphore();
+		}
+		*/
 	}
+	
+/*
+	private void runFromQueue(LinkedList<Process> queue, int quantum) {
+		ttl = quantum;
+
+		if (queue.isEmpty()) return; // Returns if no process to run from queue
+		Process p = queue.remove();
+		System.out.println("This is the Item: " + p.getID());
+
+		ttl = quantum; // Set time to live to the quantum
+		pcore.interrupt(p); // Replace null process with current process
+
+		if (p != null) { // If there is a current process running
+			ttl--; // Continuously decrement ttl
+			if (ttl <= 0 || p.isDone()) { // If ttl reaches quantum
+				if(!p.isDone()) {
+					queue.add(p); // If process isn't done, add process back to queue
+				}
+				p = null; // Nullify the process
+			}
+		}
+	}
+*/
 
 	public String toString(LinkedList<Process> repqueue) {
 		String s = "";
@@ -109,6 +161,7 @@ public class Scheduler extends Thread {
 		return s;
 
 	}
+
 	public void removeProcess( Process proc ) {
 		activeQueue.remove(proc);
 	}
