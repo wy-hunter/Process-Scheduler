@@ -107,51 +107,7 @@ public class Scheduler extends Thread {
 			}
 			clock.semaphore();
 		}
-
-		/*
-		while (true) {
-			if ((!queue1.isEmpty() || !queue2.isEmpty() || !queue3.isEmpty())) {
-				for (int i = 0; i < 3; ++i) {
-					if (i == 0) {
-						runFromQueue(queue1, queue1_quantum);
-						runFromQueue(queue2, queue2_quantum);
-						runFromQueue(queue3, queue3_quantum);
-					} else if (i == 1) {
-						runFromQueue(queue1, queue1_quantum);
-						runFromQueue(queue2, queue2_quantum);
-					} else {
-						runFromQueue(queue1, queue1_quantum);
-					}
-				}
-			}
-
-			clock.semaphore();
-		}
-		*/
 	}
-	
-/*
-	private void runFromQueue(LinkedList<Process> queue, int quantum) {
-		ttl = quantum;
-
-		if (queue.isEmpty()) return; // Returns if no process to run from queue
-		Process p = queue.remove();
-		System.out.println("This is the Item: " + p.getID());
-
-		ttl = quantum; // Set time to live to the quantum
-		pcore.interrupt(p); // Replace null process with current process
-
-		if (p != null) { // If there is a current process running
-			ttl--; // Continuously decrement ttl
-			if (ttl <= 0 || p.isDone()) { // If ttl reaches quantum
-				if(!p.isDone()) {
-					queue.add(p); // If process isn't done, add process back to queue
-				}
-				p = null; // Nullify the process
-			}
-		}
-	}
-*/
 
 	public String toString(LinkedList<Process> repqueue) {
 		String s = "";
