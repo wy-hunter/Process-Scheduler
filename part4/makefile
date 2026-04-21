@@ -1,6 +1,6 @@
 testJava:  clean
 	javac *.java
-	java schedulerTest
+	java Packaging
 	
 everything:clean
 	javac *.java	

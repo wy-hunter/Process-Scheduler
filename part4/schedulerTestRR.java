@@ -3,12 +3,12 @@
 // CSCI 70300 -- 2025 SP -- Edgar E. Troudt, Ph.D.
 //
 
-public class schedulerTestIWRR {
+public class schedulerTestRR {
 
 	private static Clock            c;
 	private static ProcessGenerator ps;
 	private static ProcessorCore    pr;
-	private static SchedulerIWRR	    sc;
+	private static SchedulerRR	    sc;
 
 	public static void main ( String args[] ) {
 		// everyone follows the computer's clock
@@ -21,7 +21,7 @@ public class schedulerTestIWRR {
 
 		// generates the operating system's scheduling algorithm
 		// instantiate the scheduler with a quantum of 5.
-		sc = new SchedulerIWRR(c, pr, 5);
+		sc = new SchedulerRR(c, pr, 5);
 		//pr.setScheduler(sc);
 
 		// simulates the user + OS generating needed processes to run
@@ -38,10 +38,10 @@ public class schedulerTestIWRR {
 	}
 
 	public void run() {
-		System.out.println("schedulerTestIWRR started.");
+		System.out.println("schedulerTestRR started.");
 		c = new Clock();
 		pr = new ProcessorCore(c);
-		sc = new SchedulerIWRR(c, pr, 5);
+		sc = new SchedulerRR(c, pr, 5);
 		ps = new ProcessGenerator(c, sc);
 
 		// start our simulation
