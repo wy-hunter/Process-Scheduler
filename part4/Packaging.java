@@ -4,11 +4,9 @@
 import java.util.Scanner;
 
 public class Packaging {
-    /*
     private static schedulerTestRR rr = new schedulerTestRR();
     private static schedulerTestCWRR cwrr = new schedulerTestCWRR();
     private static schedulerTestIWRR iwrr = new schedulerTestIWRR();
-    */
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
