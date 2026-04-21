@@ -3,7 +3,7 @@
 // CSCI 70300 -- 2025 SP -- Edgar E. Troudt, Ph.D.
 //
 
-public class schedulerTest {
+public class schedulerTestCWRR {
 
 	private static Clock            c;
 	private static ProcessGenerator ps;
@@ -29,6 +29,19 @@ public class schedulerTest {
 		ps = new ProcessGenerator(c, sc);
 
 		/* FILL IN #9 all of the above. */
+
+		// start our simulation
+		c.start();	// start the clock
+		pr.start();	// start the processor
+		sc.start();	// start the scheduler
+		ps.start();	// start the process generator
+	}
+
+	public void run() {
+		c = new Clock();
+		pr = new ProcessorCore(c);
+		sc = new Scheduler(c, pr, 5);
+		ps = new ProcessGenerator(c, sc);
 
 		// start our simulation
 		c.start();	// start the clock
